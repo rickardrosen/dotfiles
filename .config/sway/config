@@ -20,12 +20,20 @@ set $term alacritty
 # on the original workspace that the command was run on.
 #set $menu dmenu_path | dmenu | xargs swaymsg exec --
 #set $menu j4-dmenu-desktop --dmenu="bemenu -i" --term="alacritty" | xargs swaymsg exec -- 
-set $menu dmenu_path | wofi --dmenu | xargs swaymsg exec --
+#set $menu dmenu_path | wofi --allow-images --dmenu | xargs swaymsg exec --
+set $menu exec wofi --show drun --allow-images
+#set $menu ulauncher  | xargs swaymsg exec --
+#for_window [app_id="^launcher$"] floating enable, sticky enable, resize set 30 ppt 60 ppt, border pixel 10
+#set $menu exec $term --class=launcher -e ~/.local/share/sway-launcher-desktop/sway-launcher-desktop.sh
 gaps inner 8
 default_border none
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec hash dbus-update-activation-environment 2>/dev/null && \
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
 exec mako
 exec autotiling
 exec inactive-windows-transparency.py -o 0.8
+exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 output "*" bg /home/rickard/Downloads/dune.jpg fill
 ### Output configuration
 #
@@ -43,8 +51,8 @@ output "*" bg /home/rickard/Downloads/dune.jpg fill
 # Example configuration:
 #
  exec swayidle -w \
-          timeout 300 'swaylock -f -c 000000' \
-          timeout 600 'swaymsg "output * dpms off"' \
+          timeout 3000 'swaylock -f -c 000000' \
+          timeout 2000 'swaymsg "output * dpms off"' \
                resume 'swaymsg "output * dpms on"' \
           before-sleep 'swaylock -f -c 000000'
 #
