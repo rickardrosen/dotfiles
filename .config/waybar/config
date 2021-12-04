@@ -26,10 +26,11 @@
         "memory",
         "cpu",
         "disk",
-        "tray",
+        "pulseaudio",
         "clock#date",
         "clock#time",
-        "custom/power"
+        "custom/power",
+        "tray"
     ],
     // -------------------------------------------------------------------------
     // Modules
@@ -50,11 +51,11 @@
         "states": {
             "warning": 70,
             "critical": 90
-        }
+        },
     },
     "memory": {
         "interval": 5,
-        "format": "  {}%", // Icon: memory
+        "format": "  {}%", // Icon: memory
         "states": {
             "warning": 70,
             "critical": 90
@@ -62,14 +63,39 @@
     },
     "disk": {
         "interval": 30,
-        "format": " {percentage_used}%", // Icon: database
+        "format": "  {percentage_used}%", // Icon: database
         "path": "/"
     },
     "network": {
-        "interval": 5,
-        "format-ethernet": ": {bandwidthDownOctets} : {bandwidthUpOctets}", // Icon: ethernet
-        "format-disconnected": "⚠  Disconnected",
-        "tooltip-format": "{ifname}: {ipaddr}"
+        "format": "{ifname} {icon}",
+        "format-wifi": "{icon} ({signalStrength}%)",
+        "format-alt": "{ipaddr}/{cidr} {icon} {essid}",
+        "format-alt-click": "click-right",
+        "format-icons": {
+            "wifi": ["睊", "直" ,""],
+            "ethernet": [""],
+            "disconnected": [""]
+        },
+        "on-click": "alacritty -e nmtui",
+        "tooltip": false
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}% {format_source}",
+        "format-bluetooth": "{icon} {volume}% ",
+        "format-muted": "", //
+        "format-source": "",
+        "format-source-muted": "",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "default": ["", "", ""]
+        },
+        "scroll-step": 1,
+        "on-click": "pavucontrol",
+        "tooltip": false
     },
     "sway/mode": {
         "format": "<span style=\"italic\">  {}</span>", // Icon: expand-arrows-alt
@@ -77,29 +103,14 @@
     },
     "sway/window": {
         "format": "{}",
-        "max-length": 50
-    },
-    "sway/workspaces": {
-        "all-outputs": false,
-        "disable-scroll": true,
-        "format": "{icon}",
-        "format-icons": {
-            "1:web": "",
-            "2:chat": "#",
-            "3:term": "",
-          },
-        "persistent_workspaces": {
-          "1:web": [],
-          "2:chat": [],
-          "3:term": [],
-        }
+        "max-length": 200,
+        "tooltip": false
     },
     "custom/power": {
-        "format": "",
+        "format": "  ",
         "on-click": "swaynag -t warning -m 'Power Menu Options' -b 'Logout' 'swaymsg exit' -b 'Suspend' 'systemctl suspend' -b 'Shutdown' 'systemctl shutdown' -b 'Reboot' 'systemctl reboot'"
     },
     "tray": {
-        "icon-size": 21,
-        "spacing": 10
+        "icon-size": 18
     }
 }
