@@ -90,8 +90,8 @@ input * {
 
     # Start your launcher
     bindsym $mod+d exec $menu
-    bindsym Shift+Print	exec grimshot --notify save area
-    bindsym Print	exec grimshot --notify save screen
+    bindsym Shift+Print	exec grimshot --notify save area | imv
+    bindsym Print	exec grimshot --notify | imv
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
     # Despite the name, also works for non-floating windows.
