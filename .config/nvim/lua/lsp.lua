@@ -1,12 +1,12 @@
-local function custom_attach(_, bufnr)
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...)
+     vim.api.nvim_buf_set_keymap(bufnr, ...)
+  end
+  local function buf_set_option(...)
+     vim.api.nvim_buf_set_option(bufnr, ...)
+  end
    print("LSP started")
    vim.lsp.set_log_level(0)
-   local function buf_set_keymap(...)
-      vim.api.nvim_buf_set_keymap(bufnr, ...)
-   end
-   local function buf_set_option(...)
-      vim.api.nvim_buf_set_option(bufnr, ...)
-   end
 
    -- Enable completion triggered by <c-x><c-o>
    buf_set_option("omnifunc", "v:lua.vim.lsp.omnifunc")
@@ -40,6 +40,13 @@ local function custom_attach(_, bufnr)
    buf_set_keymap("n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
    --buf_set_keymap("v", "<space>ca", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
    buf_set_keymap("v", "<leader>ca", "<cmd>Telescope lsp_range_code_actions<CR>", opts)
+   buf_set_keymap("n", "gs", ":TSLspOrganize<CR>", opts)
+   buf_set_keymap("n", "gi", ":TSLspRenameFile<CR>", opts)
+   buf_set_keymap("n", "go", ":TSLspImportAll<CR>", opts)
+
+   if client.resolved_capabilities.document_formatting then
+        vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
+    end
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -103,14 +110,32 @@ end
 
 
 local lspconfig = require "lspconfig"
+lspconfig.tsserver.setup({
+    on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
+        local ts_utils = require("nvim-lsp-ts-utils")
+        ts_utils.setup({
+            eslint_bin = "eslint_d",
+            eslint_enable_diagnostics = true,
+            eslint_enable_code_actions = true,
+            enable_formatting = true,
+            formatter = "prettier",
+        })
+        ts_utils.setup_client(client)
+
+        on_attach(client, bufnr)
+    end,
+})require("null-ls").config({})
+lspconfig["null-ls"].setup({ on_attach = on_attach })
 -- lspservers with default config
-local servers = { "html", "tsserver", "terraformls" }
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup({
-    on_attach = custom_attach,
-    capabilities = capabilities,
-    flags = {
-      debounce_text_changes = 150,
-    },
-  })
-end
+--local servers = { "html", "tsserver", "terraformls" }
+--for _, lsp in ipairs(servers) do
+--  lspconfig[lsp].setup({
+--    on_attach = custom_attach,
+--    capabilities = capabilities,
+--    flags = {
+--      debounce_text_changes = 150,
+--    },
+--  })
+--end
