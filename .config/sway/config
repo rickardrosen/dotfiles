@@ -21,7 +21,7 @@ set $term kitty #alacritty
 #set $menu dmenu_path | dmenu | xargs swaymsg exec --
 #set $menu j4-dmenu-desktop --dmenu="bemenu -i" --term="alacritty" | xargs swaymsg exec -- 
 #set $menu dmenu_path | wofi --allow-images --dmenu | xargs swaymsg exec --
-set $menu exec wofi --show drun --allow-images
+set $menu exec wofi --show=drun --allow-images
 #set $menu ulauncher  | xargs swaymsg exec --
 #for_window [app_id="^launcher$"] floating enable, sticky enable, resize set 30 ppt 60 ppt, border pixel 10
 #set $menu exec $term --class=launcher -e ~/.local/share/sway-launcher-desktop/sway-launcher-desktop.sh
@@ -90,6 +90,7 @@ input * {
 
     # Start your launcher
     bindsym $mod+d exec $menu
+    bindsym Shift+$mod+d exec wofi --show run
     bindsym Shift+Print	exec grimshot --notify save area | imv
     bindsym Print	exec grimshot --notify | imv
     # Drag floating windows by holding down $mod and left mouse button.

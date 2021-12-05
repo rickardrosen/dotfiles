@@ -36,8 +36,6 @@
 * {
   border: none;
   border-radius: 0;
-  /*font-family: "SF Mono", "Material Icons", monospace;*/
-  /*font-family: Source Code Pro;*/
   font-family: Meslo LG S Nerd Font;
   font-size: 12px;
   min-height: 0;
@@ -87,10 +85,6 @@ window#waybar {
   min-width: 90px;
 }
 
-/*#window {
-  border-left: 2px solid #b16286;
-}*/
-
 #clock {
   background-color: #282828;
 }
@@ -133,7 +127,6 @@ window#waybar {
 }
 
 #custom-mic.muted {
-  /* color: #fb4934; */
   border-bottom-color: #fb4934;
   color: #fbf1c7;
   background-color: #fb4934;
