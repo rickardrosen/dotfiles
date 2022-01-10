@@ -25,6 +25,9 @@ lua <<EOF
   require('lsp')
   require('treesitter')
   require('cmp_setup')
+  vim.g.markdown_fenced_languages = {
+  "ts=typescript"
+  }
 EOF
 
 inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -58,9 +61,6 @@ set signcolumn=number
 " set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<
 set list listchars=tab:\ \ ,trail:·
 
-" Set completeopt to have a better completion experience
-"set completeopt=menuone,noinsert,noselect
-
 " Nix path to fzf
 set rtp+=/run/current-system/sw/bin/fzf
 
@@ -83,9 +83,7 @@ let g:gruvbox_material_background = 'soft'
 colorscheme gruvbox-material
 let g:airline_theme='gruvbox_material'
 
-  " Tabline
 let mapleader = " "
-"map <Space> <Leader>
 nnoremap <Leader><Leader> :GFiles<CR>
 nnoremap <C-F> :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
@@ -94,6 +92,7 @@ nnoremap <Leader>m :Marks<CR>
 "nnoremap <Leader>l :Lines<CR>
 nnoremap <Leader>l :BLines<CR>
 nnoremap <Leader>g :Rg<CR>
+nnoremap <leader>x :bw<CR>
 nnoremap ö {
 nnoremap ä }
 nnoremap Ö [
@@ -101,6 +100,20 @@ nnoremap Ä ]
 "remap the p command in visual mode so that it first deletes to the black hole register 
 " xnoremap <leader>p "_dP
 "
+
+" terminal emulator
+"""""""""""""""
+"tnoremap <Esc> <C-\><C-n>
+"tnoremap <Esc> <C-\><C-n>?\$<CR>
+" Move between windows
+tnoremap <A-h> <C-\><C-n><C-w>h
+tnoremap <A-j> <C-\><C-n><C-w>j
+tnoremap <A-k> <C-\><C-n><C-w>k
+tnoremap <A-l> <C-\><C-n><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
 
 augroup prettier_save
   au!

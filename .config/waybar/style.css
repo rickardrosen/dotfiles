@@ -36,7 +36,7 @@
 * {
   border: none;
   border-radius: 0;
-  font-family: Meslo LG S Nerd Font;
+  font-family: Hack Nerd Font;
   font-size: 12px;
   min-height: 0;
 }
@@ -47,7 +47,7 @@ window#waybar {
 }
 
 #workspaces button {
-  padding: 0 4px;
+  padding: 0 5px;
   background: transparent;
   color: #fbf1c7;
   border-bottom: 2px solid transparent;

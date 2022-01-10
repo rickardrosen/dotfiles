@@ -55,7 +55,7 @@
     },
     "memory": {
         "interval": 5,
-        "format": "  {}%", // Icon: memory
+        "format": " {}%", // Icon: memory
         "states": {
             "warning": 70,
             "critical": 90
@@ -63,7 +63,7 @@
     },
     "disk": {
         "interval": 30,
-        "format": "  {percentage_used}%", // Icon: database
+        "format": " {percentage_used}%", // Icon: database
         "path": "/"
     },
     "network": {

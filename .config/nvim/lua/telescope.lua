@@ -3,8 +3,16 @@ if not present then
    return
 end
 
+local actions = require 'telescope.actions'
 telescope.setup {
    defaults = {
+      mappings = {
+        i = {
+          ['<C-j>'] = actions.move_selection_next,
+          ['<C-k>'] = actions.move_selection_previous,
+        },
+        n = { ['<C-c>'] = actions.close },
+      },
       vimgrep_arguments = {
          "rg",
          "--color=never",

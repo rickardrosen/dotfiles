@@ -37,7 +37,7 @@ local on_attach = function(client, bufnr)
    buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
    --buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
    buf_set_keymap("n", "<leader>q", "<cmd>Telescope lsp_document_diagnostics<CR>", opts)
-   buf_set_keymap("n", "<space>fm", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+   buf_set_keymap("n", "<space>fb", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
    --buf_set_keymap("v", "<space>ca", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
    buf_set_keymap("v", "<leader>ca", "<cmd>Telescope lsp_range_code_actions<CR>", opts)
    buf_set_keymap("n", "gs", ":TSLspOrganize<CR>", opts)
@@ -110,32 +110,34 @@ end
 
 
 local lspconfig = require "lspconfig"
-lspconfig.tsserver.setup({
-    on_attach = function(client, bufnr)
-        client.resolved_capabilities.document_formatting = false
-        client.resolved_capabilities.document_range_formatting = false
-        local ts_utils = require("nvim-lsp-ts-utils")
-        ts_utils.setup({
-            eslint_bin = "eslint_d",
-            eslint_enable_diagnostics = true,
-            eslint_enable_code_actions = true,
-            enable_formatting = true,
-            formatter = "prettier",
-        })
-        ts_utils.setup_client(client)
+-- lspconfig.tsserver.setup({
+--     on_attach = function(client, bufnr)
+--         client.resolved_capabilities.document_formatting = false
+--         client.resolved_capabilities.document_range_formatting = false
+--         local ts_utils = require("nvim-lsp-ts-utils")
+--         ts_utils.setup({
+--             eslint_bin = "eslint_d",
+--             eslint_enable_diagnostics = true,
+--             eslint_enable_code_actions = true,
+--             enable_formatting = true,
+--             formatter = "prettier",
+--         })
+--         ts_utils.setup_client(client)
+-- 
+--         on_attach(client, bufnr)
+--     end,
+-- })require("null-ls").config({})
+-- lspconfig["null-ls"].setup({ on_attach = on_attach })
 
-        on_attach(client, bufnr)
-    end,
-})require("null-ls").config({})
-lspconfig["null-ls"].setup({ on_attach = on_attach })
--- lspservers with default config
---local servers = { "html", "tsserver", "terraformls" }
---for _, lsp in ipairs(servers) do
---  lspconfig[lsp].setup({
---    on_attach = custom_attach,
---    capabilities = capabilities,
---    flags = {
---      debounce_text_changes = 150,
---    },
---  })
---end
+--lspservers with default config
+--local servers = { "denols", "terraformls" }
+local servers = { "tsserver", "terraformls" }
+for _, lsp in ipairs(servers) do
+  lspconfig[lsp].setup({
+    on_attach = on_attach,
+    capabilities = capabilities,
+    flags = {
+      debounce_text_changes = 150,
+    },
+  })
+end

@@ -6,6 +6,10 @@ end
 ts_config.setup {
    ensure_installed = {
       "typescript",
+      "hcl",
+      "json",
+      "bash",
+      "fish"
    },
    highlight = {
       enable = true,
