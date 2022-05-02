@@ -31,12 +31,13 @@ local on_attach = function(client, bufnr)
    --buf_set_keymap("n", "<space>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
    buf_set_keymap("n", "<space>ca", "<cmd>Telescope lsp_code_actions<CR>", opts)
    --buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
-   buf_set_keymap("n", "gr", "<cmd>Telescope lsp_references<CR>", opts)
-   buf_set_keymap("n", "ge", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", opts)
-   buf_set_keymap("n", "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", opts)
-   buf_set_keymap("n", "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
+   buf_set_keymap("n", "gr", "<cmd>TroubleToggle lsp_references<CR>", opts)
+   --buf_set_keymap("n", "ge", "<cmd>lua vim.diagnostic.show_line_diagnostics()<CR>", opts)
+   buf_set_keymap("n", "ge", "<cmd>TroubleToggle document_diagnostics<CR>", opts)
+   buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
+   buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
    --buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
-   buf_set_keymap("n", "<leader>q", "<cmd>Telescope lsp_document_diagnostics<CR>", opts)
+   buf_set_keymap("n", "<leader>q", "<cmd>Telescope diagnostics<CR>", opts)
    buf_set_keymap("n", "<space>fb", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
    --buf_set_keymap("v", "<space>ca", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
    buf_set_keymap("v", "<leader>ca", "<cmd>Telescope lsp_range_code_actions<CR>", opts)
@@ -77,10 +78,10 @@ lspSymbol("Hint", "")
 lspSymbol("Warning", "")
 
 local lsp_publish_diagnostics_options = {
-   virtual_text = {
-      prefix = "",
-      spacing = 0,
-   },
+   --virtual_text = {
+   --   prefix = "",
+   --   spacing = 0,
+   --},
    signs = true,
    underline = true,
    update_in_insert = false, -- update diagnostics insert mode
@@ -131,7 +132,7 @@ local lspconfig = require "lspconfig"
 
 --lspservers with default config
 --local servers = { "denols", "terraformls" }
-local servers = { "tsserver", "terraformls" }
+local servers = { "tsserver", "terraformls", "gopls" }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup({
     on_attach = on_attach,

@@ -5,6 +5,7 @@ end
 
 ts_config.setup {
    ensure_installed = {
+      "go",
       "typescript",
       "hcl",
       "json",

@@ -37,7 +37,7 @@ exec autotiling
 exec_always ~/.config/sway/autoname-workspaces.py
 exec inactive-windows-transparency.py -o 0.8
 exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-exec wlsunset
+exec wlsunset -l 59.3 -L 18.0
 #exec copyq
 #exec flameshot
 for_window [app_id="imv"] floating enable
@@ -58,12 +58,12 @@ output "*" bg /home/rickard/Downloads/dune.jpg fill
 #
 # Example configuration:
 #
- exec swayidle -w \
-          timeout 3000 'swaylock -f -c 000000' \
-          timeout 2000 'swaymsg "output * dpms off"' \
-               resume 'swaymsg "output * dpms on"' \
-          before-sleep 'swaylock -f -c 000000'
-
+# exec swayidle -w \
+#          timeout 3000 'swaylock -f -c 000000' \
+#          timeout 2000 'swaymsg "output * dpms off"' \
+#               resume 'swaymsg "output * dpms on"' \
+#          before-sleep 'swaylock -f -c 000000'
+#
 input * {
     xkb_layout "se"
 }

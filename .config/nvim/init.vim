@@ -15,6 +15,9 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'folke/trouble.nvim'
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
+" Plug 'kyazdani42/nvim-web-devicons'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
 " List ends here. Plugins become visible to Vim after this call.
@@ -26,12 +29,23 @@ lua <<EOF
   require('treesitter')
   require('cmp_setup')
   vim.g.markdown_fenced_languages = {
-  "ts=typescript"
+    "ts=typescript"
+  }
+  require('trouble').setup {
+   icons = false,
+   fold_open = "v", -- icon used for open folds
+   fold_closed = ">", -- icon used for closed folds
+   indent_lines = false, -- add an indent guide below the fold icons
+   signs = {
+       -- icons / text used for a diagnostic
+       error = "error",
+       warning = "warn",
+       hint = "hint",
+       information = "info"
+   },
+   use_diagnostic_signs = false
   }
 EOF
-
-inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 set termguicolors
 set tabstop=2
@@ -84,6 +98,14 @@ colorscheme gruvbox-material
 let g:airline_theme='gruvbox_material'
 
 let mapleader = " "
+nnoremap <Leader>d <cmd>TroubleToggle<cr>
+nnoremap <Leader>dw <cmd>TroubleToggle workspace_diagnostics<cr>
+nnoremap <Leader>dd <cmd>TroubleToggle document_diagnostics<cr>
+nnoremap <Leader>qf <cmd>TroubleToggle quickfix<cr>
+nnoremap <Leader>dl <cmd>TroubleToggle loclist<cr>
+nnoremap gR <cmd>TroubleToggle lsp_references<cr>
+inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 nnoremap <Leader><Leader> :GFiles<CR>
 nnoremap <C-F> :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
@@ -92,11 +114,13 @@ nnoremap <Leader>m :Marks<CR>
 "nnoremap <Leader>l :Lines<CR>
 nnoremap <Leader>l :BLines<CR>
 nnoremap <Leader>g :Rg<CR>
-nnoremap <leader>x :bw<CR>
+"nnoremap <leader>x :bw<CR>
 nnoremap ö {
 nnoremap ä }
 nnoremap Ö [
 nnoremap Ä ]
+nnoremap <leader>v <cmd>CHADopen<cr>
+
 "remap the p command in visual mode so that it first deletes to the black hole register 
 " xnoremap <leader>p "_dP
 "
@@ -126,4 +150,5 @@ augroup tf_save
 augroup END
 
 autocmd bufwritepost *.tf silent !terraform fmt
-
+" autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
+" autocmd BufWritePre *.go lua goimports(1000)
