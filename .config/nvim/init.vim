@@ -69,6 +69,7 @@ set nowritebackup
 " Avoid showing message extra message when using completion
 set shortmess+=c
 set signcolumn=number
+set clipboard+=unnamedplus
 " set background=dark
 "
 " Display tabs and trailing spaces visually
@@ -106,7 +107,7 @@ nnoremap <Leader>dl <cmd>TroubleToggle loclist<cr>
 nnoremap gR <cmd>TroubleToggle lsp_references<cr>
 inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-nnoremap <Leader><Leader> :GFiles<CR>
+nnoremap <Leader><Leader> :Buffers<CR>
 nnoremap <C-F> :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>w :Windows<CR>

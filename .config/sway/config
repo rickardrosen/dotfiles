@@ -7,6 +7,8 @@
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
+include /etc/sway/config.d/*
+
 xwayland disable
 set $mod Mod4
 # Home row direction keys, like vim
@@ -40,6 +42,7 @@ exec dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DE
 exec wlsunset -l 59.3 -L 18.0
 #exec copyq
 #exec flameshot
+exec wl-paste -t text --watch clipman store
 for_window [app_id="imv"] floating enable
 for_window [title="CopyQ$"] floating enable
 ### Output configuration
@@ -58,12 +61,19 @@ output "*" bg /home/rickard/Downloads/dune.jpg fill
 #
 # Example configuration:
 #
-# exec swayidle -w \
-#          timeout 3000 'swaylock -f -c 000000' \
-#          timeout 2000 'swaymsg "output * dpms off"' \
-#               resume 'swaymsg "output * dpms on"' \
-#          before-sleep 'swaylock -f -c 000000'
-#
+exec_always swayidle -w \
+          timeout 300 'swaylock -f -c 000000' \
+          timeout 600 'swaymsg "output * dpms off"' \
+          resume 'swaymsg "output * dpms on"' \
+          before-sleep 'swaylock -f -c 000000' \
+          timeout 900 'systemctl suspend'
+
+#exec swayidle -w \
+#          timeout 2000 'swaylock-fancy' \
+#          timeout 3000 'swaymsg "output * dpms off"' \
+#          resume 'swaymsg "output * dpms on"' \
+#          before-sleep 'swaylock-fancy'
+
 input * {
     xkb_layout "se"
 }
@@ -74,8 +84,8 @@ input * {
 #
     # Start a terminal
     bindsym $mod+Return exec $term
-    bindsym $mod+Shift+Return exec $term --working-directory $(readlink /proc/$(ps --no-headers --ppid $(swaymsg -t get_tree | jq '.. | select(.focused?==true) | .pid') | awk '{print $1}')/cwd || echo $HOME)
-
+    bindsym $mod+Shift+Return exec ~/.config/sway/terminal.sh
+    #bindsym $mod+Shift+Return exec $term -c 'cd $(readlink /proc/$(ps --no-headers --ppid $(swaymsg -t get_tree | jq '.. | select(.focused?==true) | .pid') | awk '{print $1}')/cwd || echo $HOME)'
     # Kill focused window
     bindsym $mod+Shift+q kill
 
