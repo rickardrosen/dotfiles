@@ -36,16 +36,18 @@ local on_attach = function(client, bufnr)
    buf_set_keymap("n", "ge", "<cmd>TroubleToggle document_diagnostics<CR>", opts)
    buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
    buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
+   buf_set_keymap("n", "<c>ä", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
+   buf_set_keymap("n", "<c>ö", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
    --buf_set_keymap("n", "<space>q", "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>", opts)
    buf_set_keymap("n", "<leader>q", "<cmd>Telescope diagnostics<CR>", opts)
    buf_set_keymap("n", "<space>fb", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
    --buf_set_keymap("v", "<space>ca", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", opts)
    buf_set_keymap("v", "<leader>ca", "<cmd>Telescope lsp_range_code_actions<CR>", opts)
    buf_set_keymap("n", "gs", ":TSLspOrganize<CR>", opts)
-   buf_set_keymap("n", "gi", ":TSLspRenameFile<CR>", opts)
-   buf_set_keymap("n", "go", ":TSLspImportAll<CR>", opts)
+   --buf_set_keymap("n", "gi", ":TSLspRenameFile<CR>", opts)
+   --buf_set_keymap("n", "go", ":TSLspImportAll<CR>", opts)
 
-   if client.resolved_capabilities.document_formatting then
+   if client.server_capabilities.document_formatting then
         vim.cmd("autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()")
     end
 end
@@ -109,8 +111,6 @@ vim.notify = function(msg, log_level, _opts)
    end
 end
 
-
-local lspconfig = require "lspconfig"
 -- lspconfig.tsserver.setup({
 --     on_attach = function(client, bufnr)
 --         client.resolved_capabilities.document_formatting = false
@@ -130,9 +130,9 @@ local lspconfig = require "lspconfig"
 -- })require("null-ls").config({})
 -- lspconfig["null-ls"].setup({ on_attach = on_attach })
 
+local lspconfig = require "lspconfig"
 --lspservers with default config
---local servers = { "denols", "terraformls" }
-local servers = { "tsserver", "terraformls", "gopls" }
+local servers = { "denols", "terraformls", "gopls" }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup({
     on_attach = on_attach,
@@ -142,3 +142,23 @@ for _, lsp in ipairs(servers) do
     },
   })
 end
+
+lspconfig.denols.setup = {
+  on_attach = on_attach,
+  --root_dir = lspconfig.util.root_pattern("deno.json"),
+  init_options = { enable = true, lint = true, unstable = true },
+  flags = {
+    debounce_text_changes = 150,
+  },
+}
+
+lspconfig.tsserver.setup = {
+  root_dir = lspconfig.util.root_pattern("package.json"),
+  on_attach = on_attach,
+  init_options = {
+    lint = true,
+  },
+  flags = {
+    debounce_text_changes = 150,
+  },
+}

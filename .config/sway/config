@@ -49,6 +49,7 @@ for_window [title="CopyQ$"] floating enable
 #
 # Default wallpaper
 #output * bg ~/.config/sway/backgrounds/Sway_Wallpaper_Blue_1920x1080.png fill
+output DP-1 mode 3440x1440@100Hz
 output "*" bg /home/rickard/Downloads/dune.jpg fill
 #
 # Example configuration:
@@ -77,6 +78,9 @@ exec_always swayidle -w \
 input * {
     xkb_layout "se"
 }
+input "type:keyboard" {
+    xkb_options caps:ctrl_modifier
+}
 #
 ### Key bindings
 #
@@ -92,7 +96,8 @@ input * {
     # Start your launcher
     bindsym $mod+d exec $menu
     bindsym Shift+$mod+d exec wofi --show run
-    bindsym Shift+Print	exec grimshot --notify save area - | pngquant - | swappy -f - #copyq tab Screenshots write image/png - && copyq tab Screenshots read image/png 0 | imv -
+    bindsym Shift+Print exec grim -g "$(swaymsg -t get_tree | jq -r '.. | select(.pid? and .visible?) | .rect | "\(.x),\(.y) \(.width)x\(.height)"' | slurp)" - | swappy -f -
+    #bindsym Shift+Print	exec grimshot --notify save area - | pngquant - | swappy -f - #copyq tab Screenshots write image/png - && copyq tab Screenshots read image/png 0 | imv -
     bindsym Print	exec grimshot --notify save active - | pngquant - | swappy -f -
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.

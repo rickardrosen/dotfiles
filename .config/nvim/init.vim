@@ -104,7 +104,7 @@ nnoremap <Leader>dw <cmd>TroubleToggle workspace_diagnostics<cr>
 nnoremap <Leader>dd <cmd>TroubleToggle document_diagnostics<cr>
 nnoremap <Leader>qf <cmd>TroubleToggle quickfix<cr>
 nnoremap <Leader>dl <cmd>TroubleToggle loclist<cr>
-nnoremap gR <cmd>TroubleToggle lsp_references<cr>
+"nnoremap gR <cmd>TroubleToggle lsp_references<cr>
 inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 nnoremap <Leader><Leader> :Buffers<CR>
@@ -121,6 +121,7 @@ nnoremap ä }
 nnoremap Ö [
 nnoremap Ä ]
 nnoremap <leader>v <cmd>CHADopen<cr>
+nnoremap <esc> :noh<return><esc>
 
 "remap the p command in visual mode so that it first deletes to the black hole register 
 " xnoremap <leader>p "_dP
