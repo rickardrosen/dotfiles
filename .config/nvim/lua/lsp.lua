@@ -141,7 +141,7 @@ null_ls.setup({
              group = group,
              buffer = bufnr,
              callback = function()
-               vim.lsp.buf.format({async = true})
+               vim.lsp.buf.format()
              end
            }
        )
