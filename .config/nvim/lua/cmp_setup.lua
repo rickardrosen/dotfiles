@@ -4,13 +4,14 @@ if not present then
    return
 end
 
-vim.opt.completeopt = "menuone,noselect"
+vim.opt.completeopt = "menu,menuone,noselect"
 
 -- nvim-cmp setup
 cmp.setup {
    snippet = {
       expand = function(args)
-         require("luasnip").lsp_expand(args.body)
+        vim.fn["vsnip#anonymous"](args.body)
+         -- require("luasnip").lsp_expand(args.body)
       end,
    },
    formatting = {
@@ -63,7 +64,7 @@ cmp.setup {
    },
    sources = {
       { name = "nvim_lsp" },
-      --{ name = "luasnip" },
+      { name = "vsnip" },
       { name = "buffer" },
       { name = "nvim_lua" },
       { name = "path" },

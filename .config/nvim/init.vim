@@ -7,6 +7,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'neovim/nvim-lspconfig'
 Plug 'sainnhe/gruvbox-material'
@@ -20,6 +22,7 @@ Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 " Plug 'kyazdani42/nvim-web-devicons'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
+"Plug 'sbdchd/neoformat'
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
@@ -108,7 +111,7 @@ nnoremap <Leader>dl <cmd>TroubleToggle loclist<cr>
 inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 nnoremap <Leader><Leader> :Buffers<CR>
-nnoremap <C-F> :Files<CR>
+nnoremap <Leader>f :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
 nnoremap <Leader>w :Windows<CR>
 nnoremap <Leader>m :Marks<CR>
@@ -141,10 +144,16 @@ nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
-augroup prettier_save
-  au!
-  au FileType javascript,typescript,typescriptreact,json nnoremap <buffer> <Leader>wf :Prettier<CR>:w<CR>
-augroup END
+""let g:neoformat_try_node_exe = 1
+""augroup fmt
+""  autocmd!
+""  autocmd BufWritePre * undojoin | Neoformat
+""augroup END
+
+"" augroup prettier_save
+""  au!
+""  au FileType javascript,typescript,typescriptreact,json nnoremap <buffer> <Leader>wf :Prettier<CR>:w<CR>
+"" augroup END
 
 augroup tf_save
   au!

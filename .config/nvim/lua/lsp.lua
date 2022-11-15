@@ -111,6 +111,44 @@ vim.notify = function(msg, log_level, _opts)
    end
 end
 
+--vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]
+
+local null_ls_status_ok, null_ls = pcall(require, "null-ls")
+if not null_ls_status_ok then
+	return
+end
+-- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/formatting
+local formatting = null_ls.builtins.formatting
+-- https://github.com/jose-elias-alvarez/null-ls.nvim/tree/main/lua/null-ls/builtins/diagnostics
+local diagnostics = null_ls.builtins.diagnostics
+null_ls.setup({
+  sources = {
+      -- Typescript
+      -- diagnostics.eslint_d,
+      -- code_actions.eslint_d,
+      formatting.prettier,
+      -- Lua
+      -- formatting.stylua,
+      -- Go
+      formatting.gofmt,
+  },
+	on_attach = function(client, bufnr)
+		if client.server_capabilities.documentFormattingProvider then
+       vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+       local group = vim.api.nvim_create_augroup("LspFormatting", { clear = true })
+       vim.api.nvim_create_autocmd(
+         "BufWritePre", { 
+             group = group,
+             buffer = bufnr,
+             callback = function()
+               vim.lsp.buf.format({async = true})
+             end
+           }
+       )
+		end
+	end,
+})
+
 -- lspconfig.tsserver.setup({
 --     on_attach = function(client, bufnr)
 --         client.resolved_capabilities.document_formatting = false
@@ -131,8 +169,31 @@ end
 -- lspconfig["null-ls"].setup({ on_attach = on_attach })
 
 local lspconfig = require "lspconfig"
+
+lspconfig.denols.setup({
+  on_attach = on_attach,
+  root_dir = lspconfig.util.root_pattern("deno.json"),
+  capabilities = capabilities,
+  init_options = { enable = true, lint = true, unstable = true },
+  flags = {
+    debounce_text_changes = 150,
+  },
+})
+
+lspconfig.tsserver.setup({
+  --root_dir = lspconfig.util.root_pattern("package.json"),
+  on_attach = on_attach,
+  capabilities = capabilities,
+  init_options = {
+    lint = true,
+  },
+  flags = {
+    debounce_text_changes = 150,
+  },
+})
+
 --lspservers with default config
-local servers = { "denols", "terraformls", "gopls" }
+local servers = { "terraformls", "gopls" }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup({
     on_attach = on_attach,
@@ -143,22 +204,4 @@ for _, lsp in ipairs(servers) do
   })
 end
 
-lspconfig.denols.setup = {
-  on_attach = on_attach,
-  --root_dir = lspconfig.util.root_pattern("deno.json"),
-  init_options = { enable = true, lint = true, unstable = true },
-  flags = {
-    debounce_text_changes = 150,
-  },
-}
 
-lspconfig.tsserver.setup = {
-  root_dir = lspconfig.util.root_pattern("package.json"),
-  on_attach = on_attach,
-  init_options = {
-    lint = true,
-  },
-  flags = {
-    debounce_text_changes = 150,
-  },
-}
