@@ -22,12 +22,19 @@ Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 " Plug 'kyazdani42/nvim-web-devicons'
 Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'jose-elias-alvarez/nvim-lsp-ts-utils'
-"Plug 'sbdchd/neoformat'
+Plug 'edgedb/edgedb-vim'
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
 lua <<EOF
-  require('telescope')
+  require('telescope').setup({
+    pickers = {
+      buffers = {
+          ignore_current_buffer = true,
+          sort_mru = true
+      }
+      }
+  })
   require('lsp')
   require('treesitter')
   require('cmp_setup')
@@ -111,8 +118,8 @@ nnoremap <Leader>dl <cmd>TroubleToggle loclist<cr>
 inoremap <silent><expr> <TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 nnoremap <Leader><Leader> :Buffers<CR>
-nnoremap <Leader>f :Files<CR>
-nnoremap <Leader>b :Buffers<CR>
+nnoremap <Leader>f :Telescope find_files<CR>
+nnoremap <Leader>b :Telescope buffers<CR>
 nnoremap <Leader>w :Windows<CR>
 nnoremap <Leader>m :Marks<CR>
 "nnoremap <Leader>l :Lines<CR>
@@ -154,6 +161,10 @@ nnoremap <A-l> <C-w>l
 ""  au!
 ""  au FileType javascript,typescript,typescriptreact,json nnoremap <buffer> <Leader>wf :Prettier<CR>:w<CR>
 "" augroup END
+
+augroup edgedb
+    autocmd BufRead,BufNewFile *.esdl,*.edgeql :set filetype=edgeql
+augroup end
 
 augroup tf_save
   au!
