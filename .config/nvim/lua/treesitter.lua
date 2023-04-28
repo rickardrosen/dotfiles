@@ -10,7 +10,7 @@ ts_config.setup {
       "hcl",
       "json",
       "bash",
-      "fish"
+      "svelte"
    },
    highlight = {
       enable = true,

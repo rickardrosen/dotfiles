@@ -123,7 +123,9 @@ local formatting = null_ls.builtins.formatting
 local diagnostics = null_ls.builtins.diagnostics
 null_ls.setup({
   sources = {
-      -- Typescript
+     null_ls.builtins.formatting.prettier.with({
+        extra_filetypes = { "svelte" },
+    }),     -- Typescript
       -- diagnostics.eslint_d,
       -- code_actions.eslint_d,
       formatting.prettier,
@@ -149,40 +151,21 @@ null_ls.setup({
 	end,
 })
 
--- lspconfig.tsserver.setup({
---     on_attach = function(client, bufnr)
---         client.resolved_capabilities.document_formatting = false
---         client.resolved_capabilities.document_range_formatting = false
---         local ts_utils = require("nvim-lsp-ts-utils")
---         ts_utils.setup({
---             eslint_bin = "eslint_d",
---             eslint_enable_diagnostics = true,
---             eslint_enable_code_actions = true,
---             enable_formatting = true,
---             formatter = "prettier",
---         })
---         ts_utils.setup_client(client)
--- 
---         on_attach(client, bufnr)
---     end,
--- })require("null-ls").config({})
--- lspconfig["null-ls"].setup({ on_attach = on_attach })
-
 local lspconfig = require "lspconfig"
 
-lspconfig.denols.setup({
-  on_attach = on_attach,
-  root_dir = lspconfig.util.root_pattern("deno.json"),
-  capabilities = capabilities,
-  init_options = { enable = true, lint = true, unstable = true },
-  flags = {
-    debounce_text_changes = 150,
-  },
-})
+--lspconfig.denols.setup({
+--  on_attach = on_attach,
+--  root_dir = lspconfig.util.root_pattern("deno.jsonc"),
+--  capabilities = capabilities,
+--  init_options = { enable = true, lint = true, unstable = true },
+--  flags = {
+--    debounce_text_changes = 150,
+--  },
+--})
 
 lspconfig.tsserver.setup({
-  --root_dir = lspconfig.util.root_pattern("package.json"),
   on_attach = on_attach,
+  -- root_dir = lspconfig.util.root_pattern("package.json"),
   capabilities = capabilities,
   init_options = {
     lint = true,
@@ -193,7 +176,7 @@ lspconfig.tsserver.setup({
 })
 
 --lspservers with default config
-local servers = { "terraformls", "gopls" }
+local servers = { "svelte", "terraformls", "gopls" }
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup({
     on_attach = on_attach,
@@ -203,5 +186,3 @@ for _, lsp in ipairs(servers) do
     },
   })
 end
-
-
