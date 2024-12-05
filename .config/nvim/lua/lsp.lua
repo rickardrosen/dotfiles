@@ -153,19 +153,20 @@ null_ls.setup({
 
 local lspconfig = require "lspconfig"
 
---lspconfig.denols.setup({
---  on_attach = on_attach,
---  root_dir = lspconfig.util.root_pattern("deno.jsonc"),
---  capabilities = capabilities,
---  init_options = { enable = true, lint = true, unstable = true },
---  flags = {
---    debounce_text_changes = 150,
---  },
---})
-
-lspconfig.tsserver.setup({
+lspconfig.denols.setup({
   on_attach = on_attach,
-  -- root_dir = lspconfig.util.root_pattern("package.json"),
+  root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+  capabilities = capabilities,
+  init_options = { enable = true, lint = true, unstable = true },
+  flags = {
+    debounce_text_changes = 150,
+  },
+})
+
+lspconfig.ts_ls.setup({
+  on_attach = on_attach,
+  root_dir = lspconfig.util.root_pattern("package.json"),
+  single_file_support = false,
   capabilities = capabilities,
   init_options = {
     lint = true,
